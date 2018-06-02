@@ -244,7 +244,18 @@ if ($delete !== '')
                 echo '
             <form method=post>
                 <input type=url name=url placeholder="URL" tabindex=10 required><!--
-             --><input type=text name=categ placeholder="カテゴリ" title="半角スペースで区切って複数のカテゴリを入力することができます" tabindex=20><!--
+             --><input type=text name=categ placeholder="カテゴリ" title="半角スペースで区切って複数のカテゴリを入力することができます" tabindex=20';
+
+				if (isset($uniq))
+				{
+					echo ' autocomplete=on list=datalist><datalist id=datalist>';
+					foreach($uniq as $autocomp)
+						echo '<option value="'. $autocomp. '"></option>';
+					echo'</datalist>';
+				}
+				else
+					echo '>';
+				echo '<!--
              --><button type=submit tabindex=30 accesskey=s>追加</button>
             </form>';
             }
