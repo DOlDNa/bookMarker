@@ -67,7 +67,7 @@ if ($url)
     $bk = sys_get_temp_dir(). '/'. $txt. '.bk';
     copy($txt, $bk);
 
-    if ($data && file_put_contents($txt, $data, LOCK_EX))
+    if ($data && file_put_contents($txt, $data, LOCK_EX) && filesize($txt) >= filesize($bk))
     {
         unlink($bk);
         header('Location: ./');
@@ -115,7 +115,7 @@ if ($delete !== '')
             #result table{min-width:90%;margin:2em auto;border-top:solid thin dimgray;border-collapse:collapse}
             #result th:nth-child(2),#result td:nth-child(3),#result td:nth-child(4){white-space:nowrap}
             #result th, #result td{text-align:left;padding:1.5em;border-bottom:solid thin}
-            #search,#reset{float:right}
+            #search,#reset{float:right;margin-top:1em}
             #search{width:20%}
             *{box-sizing:border-box;font-family:"Droid Sans","Yu Gothic",YuGothic,"Hiragino Sans",sans-serif}
             .even{background-color:azure}
