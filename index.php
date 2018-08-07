@@ -113,14 +113,16 @@ if ($delete !== '')
             #reset{margin-right:1em}
             #result strong{font-weight:inherit}
             #result table{min-width:90%;margin:2em auto;border-top:solid thin dimgray;border-collapse:collapse}
+            #result td:nth-child(3){padding:1.5em}
             #result th:nth-child(2),#result td:nth-child(3),#result td:nth-child(4){white-space:nowrap}
-            #result th, #result td{text-align:left;padding:1.5em;border-bottom:solid thin}
+            #result th, #result td{text-align:left;border-bottom:solid thin}
+            #result th a,#result td a{display:block;padding:1.5em}
             #search,#reset{float:right;margin-top:1em}
             #search{width:20%}
             *{box-sizing:border-box;font-family:"Droid Sans","Yu Gothic",YuGothic,"Hiragino Sans",sans-serif}
             .even{background-color:azure}
             .link{position:relative}
-            .link .url{top:-2.5em;left:0;padding:.5em;opacity:0;max-width:800px;background-color:black;color:white;white-space:pre;border-radius:3px;position:absolute;transition:opacity 1s}
+            .link .url{top:-2em;left:0;padding:.5em;opacity:0;max-width:800px;background-color:black;color:white;white-space:pre;border-radius:3px;position:absolute;transition:opacity 1s}
             td:first-child:hover .url{opacity:1}
             a:hover,button:hover{opacity:.8}
             a{color:dimgray;text-decoration:none}
