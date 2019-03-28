@@ -122,7 +122,7 @@ if ($delete !== '')
             *{box-sizing:border-box;font-family:"Droid Sans","Yu Gothic",YuGothic,"Hiragino Sans",sans-serif}
             .even{background-color:azure}
             .link{position:relative}
-            .link .url{top:-2em;left:0;padding:.5em;opacity:0;max-width:800px;background-color:black;color:white;white-space:pre;border-radius:3px;position:absolute;transition:opacity 1s}
+            .link .url{top:0em;left:0;padding:.2em .5em;opacity:0;max-width:800px;background-color:rgba(0,0,0,.6);color:white;font-size:x-small;white-space:pre;border-radius:3px;position:absolute;transition:opacity 1s}
             td:first-child:hover .url{opacity:1}
             a:hover,button:hover{opacity:.8}
             a{color:dimgray;text-decoration:none}
