@@ -1,12 +1,9 @@
 ## bookMarker
-<img src="https://user-images.githubusercontent.com/25574701/41326425-e5bf6c82-6ef9-11e8-85cc-473ac8022106.png" width="77" height="170" alt="icon" align="left">
+<img src="https://user-images.githubusercontent.com/25574701/56259138-fafe9180-610c-11e9-8def-be069f1aaef5.png" width="27" height="60" alt="icon" align="left">
 <br>
 
-XAMPP for Linux 用のブックマークアプリです
 
-
-ブラウザごとに分かれていたブックマークをローカルホストで一元管理することができます
-
+ブラウザごとに分かれていたブックマークをローカルホストで一元管理できる XAMPP for Linux 用のブックマークアプリ
 
 インクリメンタル検索とソート機能でブックマークしたサイトを素早く見つけられます
 
@@ -17,7 +14,7 @@ XAMPP for Linux 用のブックマークアプリです
 ## スクリーンショット
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/25574701/41327923-68102464-6f00-11e8-9a51-9d4d919d51ad.png">
+<img src="https://user-images.githubusercontent.com/25574701/56259028-a3f8bc80-610c-11e9-9b59-d48cc061c393.png">
 </p>
 <hr>
 
