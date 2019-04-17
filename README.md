@@ -1,7 +1,4 @@
 ## bookMarker
-<img src="https://user-images.githubusercontent.com/25574701/56259138-fafe9180-610c-11e9-8def-be069f1aaef5.png" width="27" height="60" alt="icon" align="left">
-<br>
-
 
 ブラウザごとに分かれていたブックマークをローカルホストで一元管理できる XAMPP for Linux 用のブックマークアプリ
 
