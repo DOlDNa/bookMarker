@@ -587,7 +587,7 @@ IncSearch.ViewBookmark.prototype.createOthersElement = function(post, patternLis
   for (var i = 0, len = post.others.length; i < len; i++)
   {
 	if (i==1)
-		text.push(this.createElement('<a href="./?delete='+post.others[i]+'">&#21066;&#38500;<\/a>', '', 'td', true));
+		text.push(this.createElement('<a href="./?delete='+post.others[i]+'"><img src="Font_Awesome_5_regular_trash-alt.svg" width="20" height="24" alt=del><\/a>', '', 'td', true));
 	else
 		text.push(this.createElement(post.others[i], patternList, 'td'));
   }
