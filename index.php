@@ -55,7 +55,7 @@ if ($url)
 	$contents = mb_convert_encoding(@file_get_contents($scheme. $host. $path. '?'. $query, false, $context, 0, 10240), mb_internal_encoding(), 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
 	preg_match('/<title>(.*?)<\/title>/is', $contents, $match);
 	$title = isset($match[1]) ? trim(str_replace(["\r\n", "\r", "\n"], '', $match[1])) : $host;
-	$data[] = time(). ','. $scheme. $host. $path. '?'. $query. ','. str_replace(',', '，', $title). ','. $categ. PHP_EOL. implode('', $lines);
+	$data[] = time(). ','. $scheme. $host. $path. ($query ? '?'. $query : ''). ','. str_replace(',', '，', $title). ','. $categ. PHP_EOL. implode('', $lines);
 	$bk = sys_get_temp_dir(). '/'. $txt. '.bk';
 	copy($txt, $bk);
 
