@@ -1,50 +1,53 @@
 <?php
-if (!is_file($txt = 'links.txt')) file_put_contents($txt, '');
-if ($lines = explode(PHP_EOL, $get_txt = file_get_contents($txt) ?? ''))
+ob_implicit_flush(1);
+if (!is_file($txt = 'links.txt')) file_put_contents($txt, PHP_EOL);
+if ($lines = explode(PHP_EOL, $get_txt = file_get_contents($txt)))
 {
 	include 'config.php';
-	$category = filter_input(INPUT_GET, 'category', FILTER_SANITIZE_STRING) ?? '';
+	if ($sort_by_time) rsort($lines);
+	$cls = count($lines);
+	$category = filter_input(INPUT_GET, 'category');
 	$tmp = ini_get('upload_tmp_dir') ?? sys_get_temp_dir();
-	if ($delete = filter_input(INPUT_GET, 'delete', FILTER_SANITIZE_STRING) ?? '')
+	if ($delete = filter_input(INPUT_GET, 'delete'))
 	{
-		if (strpos($get_txt, $delete) !== false)
+		if (str_contains($get_txt, $delete))
 			file_put_contents($txt, str_replace($delete. PHP_EOL, '', $get_txt), LOCK_EX);
 		exit (header('Location: ./'. (!$category ? '' : '?category='. $category)));
 	}
-	if ($test = filter_input(INPUT_POST, 'test', FILTER_SANITIZE_STRING) ?? '')
+	if ($test = filter_input(INPUT_POST, 'test'))
 	{
 		if (file_put_contents($txt2 = $tmp. '/test.txt', urldecode($test). $get_txt))
-			file_put_contents($txt, implode(PHP_EOL, array_uniq(file($txt2))));
+			file_put_contents($txt, implode(PHP_EOL, array_uniq(file($txt2))). PHP_EOL);
 	}
 	foreach ($lines as $key => $val)
 	{
 		if (!trim($val)) unset($lines[$key]);
-		$e = explode(',', $val);
+		$e = str_getcsv($val);
 		$a[] = $e[3] ?? '';
 		$f[] = $e[1] ?? '';
-		if ($search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING) ?? '')
+		if ($search = filter_input(INPUT_GET, 'search'))
 		{
-			if (strpos($val, $search) !== false) $b[] = $val;
+			if (str_contains($val, $search)) $b[] = $val;
 			$lines = $b ?? null;
 		}
-		elseif ($dup = filter_input(INPUT_GET, 'duplicate', FILTER_SANITIZE_STRING) ?? '')
+		elseif ($dup = filter_input(INPUT_GET, 'duplicate'))
 		{
-			if (isset($e[1]) && strcmp($e[1], $dup) === 0) $b[] = $val;
+			if (isset($e[1]) && 0 === strcmp($e[1], $dup)) $b[] = $val;
 			$lines = $b ?? null;
 		}
 		elseif ($category)
 		{
-			if (isset($e[3]) && strcmp(trim($e[3]), $category) === 0) $b[] = $val;
+			if (isset($e[3]) && 0 === strcmp(trim($e[3]), $category)) $b[] = $val;
 			$lines = $b ?? null;
 		}
 	}
-	if (isset($f)) foreach (array_count_values($f) as $k => $v) if ($k && $v >= 2) $duplicate[] = $k;
-	$max = ceil(($c = !$lines ? 0 : count($lines))/$d);
+	if (isset($f)) foreach (array_count_values($f) as $k => $v) if ($k && 2 <= $v) $duplicate[] = $k;
+	$max = ceil(($c = !$lines ? 0 : $cls) / $d);
 	if (($p = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_NUMBER_INT) ?? 1) > $max) $p = $max;
 	$line = !$lines ? [] : array_slice($lines, ($p - 1) * $d, $d);
-	foreach ($line as $n => $l) list($date[], $uri[], $name[], $cat[]) = array_map('trim', explode(',', $l));
+	foreach ($line as $n => $l) if ($l && 3 === substr_count($l, ',')) [$date[], $uri[], $name[], $cat[]] = str_getcsv($l);
 	$cl = count($line);
-	if ($url = filter_input(INPUT_POST, 'url', FILTER_SANITIZE_STRING) ?? '')
+	if ($url = filter_input(INPUT_POST, 'url') ?? filter_input(INPUT_GET, 'url'))
 	{
 		ini_set('user_agent', getenv('HTTP_USER_AGENT'));
 		$parse_url = parse_url($url);
@@ -54,10 +57,10 @@ if ($lines = explode(PHP_EOL, $get_txt = file_get_contents($txt) ?? ''))
 		$query = !isset($parse_url['query']) ? '': r(rawurldecode($parse_url['query']));
 		$context = stream_context_create(['http' => ['ignore_errors' => true]]);
 		$contents = mb_convert_encoding(@file_get_contents($scheme. $host. $path. '?'. $query, false, $context, 0, 10240), mb_internal_encoding(), $enc);
-		preg_match('/<title>(.*?)<\/title>/is', $contents, $match);
-		$title = isset($match[1]) ? trim(str_replace(["\r\n", "\r", "\n"], '', $match[1])) : $url;
-		$categ = $_POST['categ'] ? filter_input(INPUT_POST, 'categ', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW) : MISC[$lang];
-		$data[] = time(). ','. $scheme. $host. $path. ($query ? '?'. $query : ''). ','. str_replace(',', '，', $title). ','. $categ. PHP_EOL. $get_txt;
+		preg_match('/<title[^>]*>(.*?)<\/title>/is', $contents, $match);
+		$title = !isset($match[1]) ? $url : trim(str_replace(["\r\n", "\r", "\n", ','], '', $match[1]));
+		$categ = filter_input(INPUT_POST, 'categ') ?: filter_input(INPUT_GET, 'categ') ?: MISC[$lang];
+		$data[] = time(). ','. $scheme. $host. $path. (!$query ? '' : '?'. $query). ','. $title. ','. $categ. PHP_EOL. $get_txt;
 		copy($txt, $backup = $tmp. '/'. $txt);
 		if ($data && file_put_contents($txt, $data, LOCK_EX) && filesize($txt) >= filesize($backup))
 		{
@@ -66,6 +69,7 @@ if ($lines = explode(PHP_EOL, $get_txt = file_get_contents($txt) ?? ''))
 		}
 	}
 	$uniq = array_uniq($a);
+	include 'html.php';
 }
 
 function r($path)
@@ -88,5 +92,3 @@ function array_uniq($array, $result=[])
 	}
 	return array_values(array_filter(array_unique($result)));
 }
-
-include 'html.php';
