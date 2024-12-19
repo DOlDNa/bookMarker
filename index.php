@@ -22,7 +22,7 @@ if ($lines = explode(PHP_EOL, $get_txt = file_get_contents($txt)))
 	foreach ($lines as $key => $val)
 	{
 		if (!trim($val)) unset($lines[$key]);
-		$e = str_getcsv($val);
+		$e = str_getcsv($val, ',', "\"", "\\");
 		$a[] = $e[3] ?? '';
 		$f[] = $e[1] ?? '';
 		if ($search = filter_input(INPUT_GET, 'search'))
@@ -45,7 +45,7 @@ if ($lines = explode(PHP_EOL, $get_txt = file_get_contents($txt)))
 	$max = ceil(($c = !$lines ? 0 : $cls) / $d);
 	if (($p = filter_input(INPUT_GET, 'p', FILTER_SANITIZE_NUMBER_INT) ?? 1) > $max) $p = $max;
 	$line = !$lines ? [] : array_slice($lines, ($p - 1) * $d, $d);
-	foreach ($line as $n => $l) if ($l && 3 === substr_count($l, ',')) [$date[], $uri[], $name[], $cat[]] = str_getcsv($l);
+	foreach ($line as $n => $l) if ($l && 3 === substr_count($l, ',')) [$date[], $uri[], $name[], $cat[]] = str_getcsv($l, ',', "\"", "\\");
 	$cl = count($line);
 	if ($url = filter_input(INPUT_POST, 'url') ?? filter_input(INPUT_GET, 'url'))
 	{

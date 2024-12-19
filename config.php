@@ -6,7 +6,7 @@ $d = 50;
 #表示言語：0=英語、1=日本語
 $lang = 1;
 
-$sort_by_time = 0;
+$sort_by_time = false;
 
 $enc = 'ASCII, JIS, UTF-8, EUC-JP, SJIS';
 
