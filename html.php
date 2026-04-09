@@ -30,7 +30,7 @@ if (isset($uniq))
 	foreach($uniq as $akey => $menu)
 	{
 		$bkm[] = $menu;
-		$accesskey = range('a', 'w')[$akey];
+				$accesskey = range('a', 'w')[$akey] ?? '';
 		echo '<li><a href="./?category=', r($menu), '"', ($menu === $category ? ' class=current' : ''), ' draggable=true accesskey="', $accesskey, '">', h($menu), '</a></li>';
 		$options[] = '<option value="'. h($menu). '"'. ($menu === $category ? ' selected' : ''). '></option>';
 	}
