@@ -47,7 +47,7 @@ if (isset($cl))
 		if (isset($date[$i], $uri[$i], $name[$i], $cat[$i]) && is_numeric(substr($date[$i], 0, strlen($date[$i]))))
 		echo
 		'<ul', ($sort_by_time ? '' : ' draggable=true'), ' id="a', $i, '">',
-		'<li><mark>', GRABHERE[$lang], '</mark><a href="', $uri[$i], '" rel="noopener noreferrer" target="_blank" tabindex=1 data-accesskey=', $i, '><kbd>', $i, '</kbd>', h($name[$i]), '</a></li>',
+		'<li><mark>', GRABHERE[$lang], '</mark><a href="', urldecode($uri[$i]), '" rel="noopener noreferrer" target="_blank" tabindex=1 data-accesskey=', $i, '><kbd>', $i, '</kbd>', h($name[$i]), '</a></li>',
 		'<li><a href="./?category=', r($cat[$i]), '">', h($cat[$i]), '</a></li>',
 		'<li><small>', date(TIME[$lang], $date[$i]), '</small></li>',
 		'<li><a href="./', (!$category ? '?' : '?category='. $category. '&amp;'), 'delete=', r($date[$i]. ','. $uri[$i]. ','. $name[$i]. ','. $cat[$i]), '" onclick="return confirm(\'', TRASH[$lang], '\')">', TRASH[$lang], '</a></li>',
