@@ -54,13 +54,14 @@ if ($lines = explode(PHP_EOL, $get_txt = file_get_contents($txt)))
 		$host = idn_to_ascii($parse_url['host']);
 		$scheme = $parse_url['scheme']. '://';
 		$path = !isset($parse_url['path']) ? '' : r(rawurldecode($parse_url['path']));
-		$query = !isset($parse_url['query']) ? '': r(rawurldecode($parse_url['query']));
+		$query = !isset($parse_url['query']) ? '' : r(rawurldecode($parse_url['query']));
+		$title = filter_input(INPUT_GET, 'title') ?? $url;
 		$context = stream_context_create(['http' => ['ignore_errors' => true]]);
-		$contents = mb_convert_encoding(@file_get_contents($scheme. $host. $path. '?'. $query, false, $context, 0, 10240), mb_internal_encoding(), $enc);
+		$contents = mb_convert_encoding(@file_get_contents($scheme. $host. $path. '?'. $query, false, $context), mb_internal_encoding(), $enc);
 		preg_match('/<title[^>]*>(.*?)<\/title>/is', $contents, $match);
-		$title = !isset($match[1]) ? $url : trim(str_replace(["\r\n", "\r", "\n", ','], '', $match[1]));
+		$title = !isset($match[1]) ? h($title) : trim(str_replace(["\r\n", "\r", "\n", ','], '', $match[1]));
 		$categ = filter_input(INPUT_POST, 'categ') ?: filter_input(INPUT_GET, 'categ') ?: MISC[$lang];
-		$data[] = time(). ','. $scheme. $host. $path. (!$query ? '' : '?'. $query). ','. $title. ','. $categ. PHP_EOL. $get_txt;
+		$data[] = time(). ','. $scheme. $host. $path. (!$query ? '' : '?'. $query). ','. h($title). ','. h($categ). PHP_EOL. $get_txt;
 		copy($txt, $backup = $tmp. '/'. $txt);
 		if ($data && file_put_contents($txt, $data, LOCK_EX) && filesize($txt) >= filesize($backup))
 		{
